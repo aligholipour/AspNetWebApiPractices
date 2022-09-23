@@ -6,7 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(setup =>
+{
+    setup.ReturnHttpNotAcceptable = true;
+
+}).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
