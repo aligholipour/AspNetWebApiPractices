@@ -13,6 +13,7 @@ namespace AspNetWebApiPractices.Infrastructures
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
             DbInitializer.Seed(modelBuilder);
         }
