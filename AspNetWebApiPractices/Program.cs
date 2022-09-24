@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using AspNetWebApiPractices.Models;
+using AspNetWebApiPractices.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +54,8 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+app.ConfigureExceptionHandler();
 
 app.MapControllers();
 
