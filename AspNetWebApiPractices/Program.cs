@@ -1,5 +1,5 @@
 using AspNetWebApiPractices.Infrastructures;
-using AspNetWebApiPractices.Services.Customer;
+using AspNetWebApiPractices.Services.Customers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

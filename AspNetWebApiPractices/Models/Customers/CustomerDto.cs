@@ -1,4 +1,4 @@
-﻿namespace AspNetWebApiPractices.Models.Customer
+﻿namespace AspNetWebApiPractices.Models.Customers
 {
     public class CustomerDto
     {
