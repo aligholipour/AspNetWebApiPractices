@@ -12,13 +12,9 @@ namespace AspNetWebApiPractices.Services.Customers
             _context = context;
         }
 
-        public CustomerDto GetCustomerById(int customerId)
+        public Customer GetCustomerById(int customerId)
         {
-            return _context.Customers.Where(c => c.Id == customerId).Select(c => new CustomerDto
-            {
-                Id = c.Id,
-                FullName = c.FullName
-            }).SingleOrDefault();
+            return _context.Customers.Find(customerId);
         }
 
         public List<CustomerDto> GetCustomers()
@@ -36,5 +32,10 @@ namespace AspNetWebApiPractices.Services.Customers
             _context.SaveChanges();
         }
 
+        public void UpdateCustomer(Customer customer)
+        {
+            _context.Customers.Update(customer);
+            _context.SaveChanges();
+        }
     }
 }

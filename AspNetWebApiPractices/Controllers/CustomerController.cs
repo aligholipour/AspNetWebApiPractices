@@ -48,5 +48,19 @@ namespace AspNetWebApiPractices.Controllers
 
             return CreatedAtRoute("GetCustomer", new { customerId = customer.Id }, customerDto);
         }
+
+        [HttpPut("{customerId}")]
+        public ActionResult<CustomerDto> UpdateCustomer(int customerId, UpdateCustomerDto updateCustomerDto)
+        {
+            var customer = _customerRepository.GetCustomerById(customerId);
+            if (customer is null)
+                return NotFound();
+
+            customer.FullName = updateCustomerDto.FullName;
+
+            _customerRepository.UpdateCustomer(customer);
+
+            return NoContent();
+        }
     }
 }

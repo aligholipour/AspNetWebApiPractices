@@ -5,8 +5,9 @@ namespace AspNetWebApiPractices.Services.Customers
 {
     public interface ICustomerRepository
     {
-        CustomerDto GetCustomerById(int customerId);
+        Customer GetCustomerById(int customerId);
         void CreateCustomer(Customer customer);
         List<CustomerDto> GetCustomers();
+        void UpdateCustomer(Customer customer);
     }
 }
