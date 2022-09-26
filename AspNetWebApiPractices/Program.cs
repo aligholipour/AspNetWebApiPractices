@@ -1,14 +1,11 @@
+using AspNetWebApiPractices.Extensions;
 using AspNetWebApiPractices.Infrastructures;
 using AspNetWebApiPractices.Services.Customers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
-using AspNetWebApiPractices.Models;
-using AspNetWebApiPractices.Extensions;
+using static AspNetWebApiPractices.Extensions.FormatterExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +14,10 @@ var configuration = builder.Configuration;
 builder.Services.AddControllers(setup =>
 {
     setup.ReturnHttpNotAcceptable = true;
-
-}).AddXmlDataContractSerializerFormatters().ConfigureApiBehaviorOptions(setup =>
+    setup.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+})
+.AddXmlDataContractSerializerFormatters()
+.ConfigureApiBehaviorOptions(setup =>
 {
     setup.InvalidModelStateResponseFactory = context =>
     {
@@ -52,6 +51,8 @@ builder.Services.AddControllers(setup =>
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

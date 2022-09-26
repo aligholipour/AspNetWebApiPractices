@@ -1,6 +1,8 @@
 ﻿using AspNetWebApiPractices.Domain.Customer;
 using AspNetWebApiPractices.Models.Customers;
 using AspNetWebApiPractices.Services.Customers;
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetWebApiPractices.Controllers
@@ -10,9 +12,11 @@ namespace AspNetWebApiPractices.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
-        public CustomerController(ICustomerRepository customerRepository)
+        private readonly IMapper _mapper;
+        public CustomerController(ICustomerRepository customerRepository, IMapper mapper)
         {
             _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{customerId}", Name = "GetCustomer")]
@@ -57,6 +61,24 @@ namespace AspNetWebApiPractices.Controllers
                 return NotFound();
 
             customer.FullName = updateCustomerDto.FullName;
+
+            _customerRepository.UpdateCustomer(customer);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{customerId}")]
+        public ActionResult<CustomerDto> PartiallyUpdateCustomer(int customerId, JsonPatchDocument<UpdateCustomerDto> patchUpdateCustomer)
+        {
+            var customer = _customerRepository.GetCustomerById(customerId);
+            if (customer is null)
+                return NotFound();
+
+            var customerToPatch = new UpdateCustomerDto { FullName = customer.FullName };
+
+            patchUpdateCustomer.ApplyTo(customerToPatch);
+
+            customer.FullName = customerToPatch.FullName;
 
             _customerRepository.UpdateCustomer(customer);
 
