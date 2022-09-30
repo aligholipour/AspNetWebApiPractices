@@ -81,5 +81,17 @@ namespace AspNetWebApiPractices.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{customerId}")]
+        public IActionResult DeleteCustomer(int customerId)
+        {
+            var customer = _customerRepository.GetCustomerById(customerId);
+            if (customer is null)
+                return NotFound();
+
+            _customerRepository.DeleteCustomer(customer);
+
+            return Ok();
+        }
     }
 }

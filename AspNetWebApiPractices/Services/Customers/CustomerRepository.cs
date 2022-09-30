@@ -37,5 +37,11 @@ namespace AspNetWebApiPractices.Services.Customers
             _context.Customers.Update(customer);
             _context.SaveChanges();
         }
+
+        public void DeleteCustomer(Customer customer)
+        {
+            _context.Customers.Remove(customer);
+            _context.SaveChanges();
+        }
     }
 }

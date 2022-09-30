@@ -9,5 +9,6 @@ namespace AspNetWebApiPractices.Services.Customers
         void CreateCustomer(Customer customer);
         List<CustomerDto> GetCustomers();
         void UpdateCustomer(Customer customer);
+        void DeleteCustomer(Customer customer);
     }
 }
