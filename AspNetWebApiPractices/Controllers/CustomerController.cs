@@ -1,4 +1,5 @@
 ﻿using AspNetWebApiPractices.Domain.Customer;
+using AspNetWebApiPractices.Helpers;
 using AspNetWebApiPractices.Models.Customers;
 using AspNetWebApiPractices.Services.Customers;
 using Microsoft.AspNetCore.JsonPatch;
@@ -95,7 +96,7 @@ namespace AspNetWebApiPractices.Controllers
         }
 
         [HttpGet("GetCustomers/{ids}", Name = "GetCustomers")]
-        public ActionResult<IList<CustomerDto>> GetCustomers(IList<int> ids)
+        public ActionResult<IList<CustomerDto>> GetCustomers([ModelBinder(BinderType = typeof(GetCollectionIdsModelBinder))] IList<int> ids)
         {
             if (ids is null)
                 return BadRequest();
