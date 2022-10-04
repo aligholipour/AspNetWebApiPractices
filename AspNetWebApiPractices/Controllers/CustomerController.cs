@@ -93,5 +93,19 @@ namespace AspNetWebApiPractices.Controllers
 
             return Ok();
         }
+
+        [HttpGet("GetCustomers/{ids}", Name = "GetCustomers")]
+        public ActionResult<IList<CustomerDto>> GetCustomers(IList<int> ids)
+        {
+            if (ids is null)
+                return BadRequest();
+
+            var customers = _customerRepository.GetCustomersByIds(ids);
+
+            if (ids.Count() != customers.Count())
+                return NotFound();
+
+            return Ok(customers);
+        }
     }
 }

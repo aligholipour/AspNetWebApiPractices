@@ -43,5 +43,12 @@ namespace AspNetWebApiPractices.Services.Customers
             _context.Customers.Remove(customer);
             _context.SaveChanges();
         }
+
+        public List<CustomerDto> GetCustomersByIds(IList<int> ids)
+        {
+            return _context.Customers.Where(x => ids.Contains(x.Id))
+                .Select(x=> new CustomerDto { Id = x.Id, FullName = x.FullName })
+                .ToList();
+        }
     }
 }

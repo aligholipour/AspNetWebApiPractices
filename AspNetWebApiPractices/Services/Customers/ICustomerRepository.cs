@@ -10,5 +10,6 @@ namespace AspNetWebApiPractices.Services.Customers
         List<CustomerDto> GetCustomers();
         void UpdateCustomer(Customer customer);
         void DeleteCustomer(Customer customer);
+        List<CustomerDto> GetCustomersByIds(IList<int> ids);
     }
 }
