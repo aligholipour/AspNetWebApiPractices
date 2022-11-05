@@ -41,15 +41,17 @@ namespace AspNetWebApiPractices.Controllers
         [HttpPost]
         public async Task<ActionResult<CustomerDto>> CreateCustomer([FromForm] CreateCustomerDto createCustomerDto)
         {
-            var customer = new Customer { FullName = createCustomerDto.FullName };
-
             var pictureName = await _fileService.UploadFileAsync(createCustomerDto.Picture, "wwwroot/customer/pictures");
+
+            var customer = new Customer { FullName = createCustomerDto.FullName, PictureName = pictureName };
+
             _customerRepository.CreateCustomer(customer);
 
             var customerDto = new CustomerDto
             {
                 Id = customer.Id,
-                FullName = customer.FullName
+                FullName = customer.FullName,
+                PictureName = pictureName
             };
 
             return CreatedAtRoute("GetCustomer", new { customerId = customer.Id }, customerDto);

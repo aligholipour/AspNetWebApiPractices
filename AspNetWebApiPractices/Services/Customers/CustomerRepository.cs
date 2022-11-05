@@ -22,7 +22,8 @@ namespace AspNetWebApiPractices.Services.Customers
             return _context.Customers.Select(x => new CustomerDto
             {
                 Id = x.Id,
-                FullName = x.FullName
+                FullName = x.FullName,
+                PictureName = x.PictureName
             }).ToList();
         }
 
