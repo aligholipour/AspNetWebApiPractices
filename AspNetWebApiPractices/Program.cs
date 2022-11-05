@@ -1,6 +1,7 @@
 using AspNetWebApiPractices.Extensions;
 using AspNetWebApiPractices.Infrastructures;
 using AspNetWebApiPractices.Services.Customers;
+using AspNetWebApiPractices.Services.Files;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -49,6 +50,7 @@ builder.Services.AddControllers(setup =>
 });
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 

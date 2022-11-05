@@ -2,6 +2,7 @@
 using AspNetWebApiPractices.Helpers;
 using AspNetWebApiPractices.Models.Customers;
 using AspNetWebApiPractices.Services.Customers;
+using AspNetWebApiPractices.Services.Files;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,11 @@ namespace AspNetWebApiPractices.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
-        public CustomerController(ICustomerRepository customerRepository)
+        private readonly IFileService _fileService;
+        public CustomerController(ICustomerRepository customerRepository, IFileService fileService)
         {
             _customerRepository = customerRepository;
+            _fileService = fileService;
         }
 
         [HttpGet("{customerId}", Name = "GetCustomer")]
@@ -36,10 +39,11 @@ namespace AspNetWebApiPractices.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CustomerDto> CreateCustomer(CreateCustomerDto createCustomerDto)
+        public async Task<ActionResult<CustomerDto>> CreateCustomer([FromForm] CreateCustomerDto createCustomerDto)
         {
             var customer = new Customer { FullName = createCustomerDto.FullName };
 
+            var pictureName = await _fileService.UploadFileAsync(createCustomerDto.Picture, "wwwroot/customer/pictures");
             _customerRepository.CreateCustomer(customer);
 
             var customerDto = new CustomerDto
