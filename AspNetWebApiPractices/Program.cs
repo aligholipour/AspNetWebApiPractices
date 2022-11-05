@@ -54,6 +54,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conf
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 app.ConfigureExceptionHandler();
 
 app.MapControllers();
