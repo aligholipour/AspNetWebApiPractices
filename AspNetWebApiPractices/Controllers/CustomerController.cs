@@ -96,6 +96,8 @@ namespace AspNetWebApiPractices.Controllers
             if (customer is null)
                 return NotFound();
 
+            _fileService.DeleteFile("wwwroot/customer/pictures", customer.PictureName);
+
             _customerRepository.DeleteCustomer(customer);
 
             return Ok();
