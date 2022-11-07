@@ -22,10 +22,13 @@
 
         public void DeleteFile(string pathFile, string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), pathFile, fileName);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), pathFile, fileName);
 
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
         }
     }
 }

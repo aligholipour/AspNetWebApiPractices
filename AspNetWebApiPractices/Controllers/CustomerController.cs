@@ -58,13 +58,21 @@ namespace AspNetWebApiPractices.Controllers
         }
 
         [HttpPut("{customerId}")]
-        public ActionResult<CustomerDto> UpdateCustomer(int customerId, UpdateCustomerDto updateCustomerDto)
+        public async Task<ActionResult<CustomerDto>> UpdateCustomer(int customerId, [FromForm] UpdateCustomerDto updateCustomerDto)
         {
             var customer = _customerRepository.GetCustomerById(customerId);
             if (customer is null)
                 return NotFound();
 
             customer.FullName = updateCustomerDto.FullName;
+
+            if (updateCustomerDto.Picture is not null)
+            {
+                _fileService.DeleteFile("wwwroot/customer/pictures", customer.PictureName);
+                var uploadedPictureName = await _fileService.UploadFileAsync(updateCustomerDto.Picture, "wwwroot/customer/pictures");
+
+                customer.PictureName = uploadedPictureName;
+            }
 
             _customerRepository.UpdateCustomer(customer);
 
