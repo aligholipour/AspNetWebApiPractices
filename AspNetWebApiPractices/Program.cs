@@ -54,6 +54,13 @@ builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddApiVersioning(config =>
+{
+    config.AssumeDefaultVersionWhenUnspecified = true;
+    config.DefaultApiVersion = new ApiVersion(1, 0);
+    config.ReportApiVersions = true;
+});
+
 var app = builder.Build();
 
 app.UseStaticFiles();
