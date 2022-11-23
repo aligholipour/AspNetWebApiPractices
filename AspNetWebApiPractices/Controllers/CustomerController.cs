@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace AspNetWebApiPractices.Controllers
 {
     [ApiController]
-    [Route("api/customers")]
+    [Route("api/v{version:apiVersion}/customers")]
+    [ApiVersion("1.0")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
