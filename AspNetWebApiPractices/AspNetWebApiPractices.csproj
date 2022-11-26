@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Controlles\**" />
-    <Compile Remove="Infrastructures\SwaggerConfigurations\**" />
     <Content Remove="Controlles\**" />
-    <Content Remove="Infrastructures\SwaggerConfigurations\**" />
     <EmbeddedResource Remove="Controlles\**" />
-    <EmbeddedResource Remove="Infrastructures\SwaggerConfigurations\**" />
     <None Remove="Controlles\**" />
-    <None Remove="Infrastructures\SwaggerConfigurations\**" />
   </ItemGroup>
 
   <ItemGroup>

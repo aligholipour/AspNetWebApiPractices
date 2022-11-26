@@ -1,5 +1,6 @@
 using AspNetWebApiPractices.Extensions;
 using AspNetWebApiPractices.Infrastructures;
+using AspNetWebApiPractices.Infrastructures.Swagger;
 using AspNetWebApiPractices.Services.Customers;
 using AspNetWebApiPractices.Services.Files;
 using Microsoft.AspNetCore.Mvc;
@@ -68,6 +69,7 @@ builder.Services.AddVersionedApiExplorer(setup =>
 });
 
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
 var app = builder.Build();
 
