@@ -61,6 +61,14 @@ builder.Services.AddApiVersioning(config =>
     config.ReportApiVersions = true;
 });
 
+builder.Services.AddVersionedApiExplorer(setup =>
+{
+    setup.GroupNameFormat = "'v'VVV";
+    setup.SubstituteApiVersionInUrl = true;
+});
+
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
