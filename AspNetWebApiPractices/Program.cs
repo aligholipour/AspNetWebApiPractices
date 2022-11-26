@@ -4,6 +4,7 @@ using AspNetWebApiPractices.Infrastructures.Swagger;
 using AspNetWebApiPractices.Services.Customers;
 using AspNetWebApiPractices.Services.Files;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -78,5 +79,17 @@ app.UseStaticFiles();
 app.ConfigureExceptionHandler();
 
 app.MapControllers();
+
+var apiVersionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    foreach (var description in apiVersionProvider.ApiVersionDescriptions)
+    {
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+    }
+});
+
 
 app.Run();
