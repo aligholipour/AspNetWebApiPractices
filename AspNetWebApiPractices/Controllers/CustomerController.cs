@@ -32,6 +32,10 @@ namespace AspNetWebApiPractices.Controllers
             return Ok(customer);
         }
 
+        /// <summary>
+        /// Get all customer
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetCustomers()
         {
