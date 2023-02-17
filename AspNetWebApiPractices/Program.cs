@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Threading.RateLimiting;
 using static AspNetWebApiPractices.Extensions.FormatterExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +80,20 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 10,
+                QueueLimit = 0,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+});
+
 var app = builder.Build();
 
 app.UseStaticFiles();
@@ -85,6 +101,8 @@ app.UseStaticFiles();
 app.ConfigureExceptionHandler();
 
 app.MapControllers();
+
+app.UseRateLimiter();
 
 var apiVersionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
