@@ -94,6 +94,16 @@ builder.Services.AddRateLimiter(options =>
             }));
 
     options.RejectionStatusCode = 429;
+
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+            await context.HttpContext.Response.WriteAsync($"Too many requests. Please try again after {retryAfter.TotalMinutes} minute(s).", cancellationToken: token);
+        else
+            await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", cancellationToken: token);
+    };
 });
 
 var app = builder.Build();
