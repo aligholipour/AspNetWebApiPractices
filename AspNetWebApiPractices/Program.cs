@@ -92,6 +92,8 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0,
                 Window = TimeSpan.FromMinutes(1)
             }));
+
+    options.RejectionStatusCode = 429;
 });
 
 var app = builder.Build();
