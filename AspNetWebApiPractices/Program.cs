@@ -103,6 +103,10 @@ builder.Services.AddRateLimiter(options =>
             await context.HttpContext.Response.WriteAsync($"Too many requests. Please try again after {retryAfter.TotalMinutes} minute(s).", cancellationToken: token);
         else
             await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", cancellationToken: token);
+
+        context.HttpContext.RequestServices.GetService<ILoggerFactory>()
+            ?.CreateLogger("RateLimitingMiddleware")
+            .LogWarning($"OnRejected: {context.HttpContext.Request.Path}");
     };
 });
 
