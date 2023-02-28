@@ -1,4 +1,5 @@
 using AspNetWebApiPractices.Extensions;
+using AspNetWebApiPractices.Helpers;
 using AspNetWebApiPractices.Infrastructures;
 using AspNetWebApiPractices.Infrastructures.Swagger;
 using AspNetWebApiPractices.Services.Customers;
@@ -108,6 +109,8 @@ builder.Services.AddRateLimiter(options =>
             ?.CreateLogger("RateLimitingMiddleware")
             .LogWarning($"OnRejected: {context.HttpContext.Request.Path}");
     };
+
+    options.AddPolicy<string, PermissionRateLimiterPolicy>("UserAuthenticated");
 });
 
 var app = builder.Build();
