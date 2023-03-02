@@ -111,6 +111,20 @@ builder.Services.AddRateLimiter(options =>
     };
 
     options.AddPolicy<string, PermissionRateLimiterPolicy>("UserAuthenticated");
+
+    options.AddFixedWindowLimiter("Api", configOptions =>
+    {
+        configOptions.AutoReplenishment = true;
+        configOptions.PermitLimit = 10;
+        configOptions.Window = TimeSpan.FromMinutes(1);
+    });
+
+    options.AddFixedWindowLimiter("Web", configOptions =>
+    {
+        configOptions.AutoReplenishment = true;
+        configOptions.PermitLimit = 10;
+        configOptions.Window = TimeSpan.FromMinutes(1);
+    });
 });
 
 var app = builder.Build();
