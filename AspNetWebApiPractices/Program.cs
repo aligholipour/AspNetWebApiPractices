@@ -81,6 +81,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+builder.Services.AddCustomRateLimiter();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
